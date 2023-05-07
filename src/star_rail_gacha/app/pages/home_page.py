@@ -284,7 +284,7 @@ class HomePage(QFrame):
                 "HTTP 错误: 得到了空的http回应" + '' if 'message' not in payload else f": {payload['message']}")
             log.warning(f"收到了个空回应: {payload}")
             return False
-        if payload['data'] == None:
+        if payload['data'] is None:
             self.statusLabel.setText(f"http回应的data为空")
             log.warning("返回的data为null")
             return False
