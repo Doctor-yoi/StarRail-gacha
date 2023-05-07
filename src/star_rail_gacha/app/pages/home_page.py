@@ -38,6 +38,7 @@ class UpdateThread(QThread):
         if api_url is None:
             self.parent().statusLabel.setText("未找到API地址", "请检查是否开启过星穹铁道的历史记录")
             self.parent().stateTooltipSignal.emit("数据更新失败，未找到API地址！", "", False)
+            self.parent().update_button.setEnabled(True)
             return
         response, code = fetch(api_url)
         valid = self.parent().check_response(response, code)
@@ -280,11 +281,8 @@ class HomePage(QFrame):
             return False
         if 'data' not in payload:
             self.statusLabel.setText(
-                "HTTP 错误: 得到了错误的http回应" + '' if 'message' not in payload else f": {payload['message']}")
-            log.warning(f'回应是否包含 `data`: {"data" in payload}')
-            log.warning(
-                f'回应 `data` 是否包含 `list`: {"list" in payload["data"]}',
-            )
+                "HTTP 错误: 得到了空的http回应" + '' if 'message' not in payload else f": {payload['message']}")
+            log.warning(f"收到了个空回应: {payload}")
             return False
         if payload['data'] == None:
             self.statusLabel.setText(f"http回应的data为空")
